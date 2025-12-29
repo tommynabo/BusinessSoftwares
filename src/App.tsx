@@ -16,9 +16,9 @@ function App() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
-      // Vercel Serverless Function Limit is 4.5MB
-      if (selectedFile.size > 4.5 * 1024 * 1024) {
-        setErrorMsg("File is too large for Vercel Demo (Max 4.5MB). Please use a shorter audio clip.");
+      // Updated limit to 100MB per user request (Warning: Vercel might still block >4.5MB)
+      if (selectedFile.size > 100 * 1024 * 1024) {
+        setErrorMsg("File is too large (Max 100MB). Please use a shorter audio clip.");
         setFile(null);
         return;
       }

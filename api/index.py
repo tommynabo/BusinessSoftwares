@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], # Allow all for Vercel previews/prod
-    allow_credentials=True,
+    allow_credentials=False, # Must be False when allow_origins is "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Business Proposal</title>
+    <link rel="stylesheet" href="proposal_style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        /* Colors with CSS Variables for easy tweaking */
+        :root {
+            --navy: #2C4251;
+            --cream: #F3F0E6;
+            --white: #FFFFFF;
+            --text-dark: #2C4251;
+            /* Using Navy for text instead of pure black for harmony */
+            --text-light: #F3F0E6;
+            --accent: #D4AF37;
+            /* Optional accent color if needed, sticking to 2-tone mainly */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--cream);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* RESET & UTILS */
+        * {
+            box-sizing: border-box;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .container {
+            padding: 50px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* TYPOGRAPHY */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 800;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 64px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            border-bottom: 4px solid var(--navy);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: #4a5c68;
+        }
+
+        /* COVER PAGE */
+        .cover-page {
+            background-color: var(--navy);
+            color: var(--cream);
+            height: 1123px;
+            /* A4 height roughly in pixels at 96dpi, but PDFMonkey handles viewport usually. We make it full height. */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
+        }
+
+        .cover-page h1 {
+            color: var(--cream);
+            font-size: 80px;
+            margin-bottom: 30px;
+        }
+
+        .cover-page .subtitle {
+            font-size: 24px;
+            opacity: 0.9;
+            margin-top: 20px;
+            border-top: 2px solid var(--cream);
+            padding-top: 30px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* SECTIONS */
+        .section-header {
+            color: var(--navy);
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--navy);
+            padding-bottom: 15px;
+        }
+
+        .question-header {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        /* SYSTEM CARDS */
+        .system-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(44, 66, 81, 0.05);
+        }
+
+        .system-card h3 {
+            color: var(--navy);
+            font-size: 28px;
+        }
+
+        .system-card .impact {
+            background-color: #E8F0FE;
+            /* Light Blue accent */
+            color: var(--navy);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* ROI METRICS */
+        .metrics-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--navy);
+            color: var(--cream);
+            flex: 1;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 48px;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* PRICING TABLE */
+        .pricing-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .pricing-table th {
+            background-color: var(--navy);
+            color: var(--cream);
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .pricing-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            color: var(--navy);
+            font-size: 18px;
+        }
+
+        .pricing-table tr:last-child td {
+            border-bottom: none;
+            font-weight: 700;
+            background-color: #f8f9fa;
+        }
+
+        /* LISTS */
+        ul.custom-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.custom-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        ul.custom-list li::before {
+            content: "•";
+            color: var(--navy);
+            font-size: 30px;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+
+        /* CTA */
+        .cta-box {
+            background: var(--navy);
+            color: var(--white);
+            text-align: center;
+            padding: 50px;
+            border-radius: 12px;
+            margin-top: 50px;
+        }
+
+        .cta-btn {
+            background: var(--cream);
+            color: var(--navy);
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+        <div>
+            <h1>Sistema<br>Blog Post<br>Creator</h1>
+            <div class="subtitle">
+                {{ prospect_name }} - PROPUESTA PARA {{ company_name }}
+            </div>
+        </div>
+    </div>
+
+    <!-- DIAGNOSIS PAGE -->
+    <div class="page-break"></div>
+    <div class="container">
+        <div class="section-header">Context & Diagnosis</div>
+
+        <div class="question-header">¿Qué hemos visto?</div>
+        <!-- We use 'safe' filter in case of HTML in description, but standard jinja is autoescaping. -->
+        <p>{{ diagnosis_text }}</p>
+
+        <div class="highlight-box">
+            <h3>Principales Retos Detectados</h3>
+            <ul class="custom-list">
+                {% for point in pain_points %}
+                <li>{{ point }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- SOLUTION PAGE -->
+    <div class="page-break"></div>
+    <div class="container">
+        <div class="section-header">The Solution: Custom Ecosystem</div>
+
+        <div class="question-header">¿Qué vamos a implementar?</div>
+        <p>Un sistema integrado para resolver los retos detectados.</p>
+
+        {% for system in systems %}
+        <div class="system-card">
+            <h3>{{ system.title }}</h3>
+            <p>{{ system.description }}</p>
+            <div class="impact">Impacto: {{ system.impact }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ROI PAGE -->
+    <div class="page-break"></div>
+    <div class="container">
+        <div class="section-header">Impacto Esperado (ROI)</div>
+
+        <div class="metrics-grid">
+            {% for metric in roi_metrics %}
+            <div class="metric-card">
+                <span class="metric-value">{{ metric.value }}</span>
+                <span class="metric-label">{{ metric.label }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3>Ganancias de Eficiencia</h3>
+        {% for chart in efficiency_charts %}
+        <div style="margin-bottom: 25px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <strong>{{ chart.label }}</strong>
+                <span>{{ chart.percentage }}%</span>
+            </div>
+            <div style="background: #ddd; height: 15px; border-radius: 10px; overflow: hidden;">
+                <div style="background: var(--navy); height: 100%; width: {{ chart.percentage }}%;"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- PRICING PAGE -->
+    <div class="page-break"></div>
+    <div class="container">
+        <div class="section-header">Inversión</div>
+
+        <p>Propuesta transparente y sin costes ocultos.</p>
+
+        <table class="pricing-table">
+            <thead>
+                <tr>
+                    <th>Item / Sistema</th>
+                    <th>Setup (One-time)</th>
+                    <th>Mensual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pricing_items %}
+                <tr>
+                    <td><strong>{{ item.name }}</strong></td>
+                    <td>{{ item.setup_price }}</td>
+                    <td>{{ item.monthly_price }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td style="font-weight: 800;">TOTAL</td>
+                    <td style="font-weight: 800;">{{ total_setup }}</td>
+                    <td style="font-weight: 800;">{{ total_monthly }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- CTA -->
+        <div class="cta-box">
+            <h2>¿Empezamos?</h2>
+            <p>El siguiente paso es formalizar el acuerdo y agendar el Kickoff.</p>
+            <a href="{{ cta_link }}" class="cta-btn">Agendar Kickoff</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

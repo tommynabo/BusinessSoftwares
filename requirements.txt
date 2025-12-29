@@ -1,0 +1,9 @@
+fastapi
+python-multipart
+uvicorn
+groq
+openai
+apify-client
+requests
+beautifulsoup4
+jinja2

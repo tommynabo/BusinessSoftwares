@@ -8,6 +8,12 @@ from .strategist import generate_proposal_data, mock_generate_strategy
 from .generate_pdf import generate_pdf, mock_generate_pdf
 
 app = FastAPI()
+handler = app # Vercel looks for 'handler' variable
+
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok", "message": "Backend is running"}
+
 
 # Configuration
 DRY_RUN = os.environ.get("DRY_RUN", "False").lower() == "true"

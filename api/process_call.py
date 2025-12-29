@@ -2,10 +2,10 @@ import os
 import shutil
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from contextlib import asynccontextmanager
-from execution.transcribe import transcribe_audio, mock_transcribe_audio
-from execution.research import scrape_linkedin_profile, scrape_website, mock_research
-from execution.strategist import generate_proposal_data, mock_generate_strategy
-from execution.generate_pdf import generate_pdf, mock_generate_pdf
+from .transcribe import transcribe_audio, mock_transcribe_audio
+from .research import scrape_linkedin_profile, scrape_website, mock_research
+from .strategist import generate_proposal_data, mock_generate_strategy
+from .generate_pdf import generate_pdf, mock_generate_pdf
 
 app = FastAPI()
 

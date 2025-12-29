@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "/execution/process_call.py"
+            "destination": "/api/process_call.py"
         }
     ],
     "framework": "vite"

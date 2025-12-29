@@ -26,6 +26,9 @@ app.add_middleware(
 def read_root():
     return {"status": "ok", "service": "Autonomous Sales Engineering Agent"}
 
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
 @app.post("/api/generate-proposal") # Prefix with /api for Vercel rewrite matching
 async def generate_proposal(
     linkedin_url: str = Form(...),
@@ -34,10 +37,9 @@ async def generate_proposal(
     """
     Main orchestration endpoint.
     1. Save Audio
-    2. Transcribe
-    3. Research
-    4. Strategize
-    5. Generate PDF
+    2. Transcribe & Research (PARALLEL)
+    3. Strategize
+    4. Generate PDF
     """
     # Vercel only allows writing to /tmp
     temp_filename = f"/tmp/temp_{file.filename}"
@@ -47,26 +49,35 @@ async def generate_proposal(
         with open(temp_filename, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # 2. Transcribe
-        if DRY_RUN:
-            transcript = mock_transcribe_audio()
-        else:
-            transcript = transcribe_audio(temp_filename)
+        loop = asyncio.get_event_loop()
+        executor = ThreadPoolExecutor()
 
-        # 3. Research
-        if DRY_RUN:
-            research_data = mock_research(linkedin_url)
-        else:
-            linkedin_data = scrape_linkedin_profile(linkedin_url)
-            website_data = {}
-            # If scraping found a website, scrape it too
-            if "website" in linkedin_data and linkedin_data["website"]:
-                website_data = scrape_website(linkedin_data["website"])
+        # Define wrapper functions for blocking calls
+        def run_transcription():
+            if DRY_RUN:
+                return mock_transcribe_audio()
+            return transcribe_audio(temp_filename)
+
+        def run_research():
+            if DRY_RUN:
+                return mock_research(linkedin_url)
             
-            research_data = {
-                "linkedin": linkedin_data,
-                "website": website_data
+            l_data = scrape_linkedin_profile(linkedin_url)
+            w_data = {}
+            if "website" in l_data and l_data["website"]:
+                w_data = scrape_website(l_data["website"])
+            
+            return {
+                "linkedin": l_data,
+                "website": w_data
             }
+
+        # 2. Upload & Transcribe + 3. Research (PARALLEL EXECUTION)
+        # using run_in_executor to not block the main loop
+        future_transcript = loop.run_in_executor(executor, run_transcription)
+        future_research = loop.run_in_executor(executor, run_research)
+
+        transcript, research_data = await asyncio.gather(future_transcript, future_research)
 
         # 4. Strategize
         if DRY_RUN:
@@ -92,6 +103,8 @@ async def generate_proposal(
         }
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
     
     finally:
